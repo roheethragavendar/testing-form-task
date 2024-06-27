@@ -1,9 +1,9 @@
 import React from "react";
-import { useContext, useState } from "react";
+import { useContext, useState,useEffect } from "react";
 import { StepperContext } from "../../contexts/StepperContext";
 import StepperControl from '../../StepperControl'; 
 
-const GeneralInformation = () => {
+const GeneralInformation = ({handleClick,currentStep,steps}) => {
   const { userData, setUserData } = useContext(StepperContext);
   const [inputValues, setInputValues] = useState({
     fullName: '',
@@ -20,16 +20,16 @@ const GeneralInformation = () => {
     everApplied: '',
     when: '',
     findWhere: '',
-    legallyPermitted:'',
-    legallyPermittedYes:'',
-    legallyPermittedNo:'',
-    status:'',
+    legallyPermitted: '',
+    legallyPermittedYes: '',
+    legallyPermittedNo: '',
+    status: '',
     statusYes: '',
     statusNo: '',
     crime: '',
-    crimeYes:'',
-    crimeNo:'',
-    timePreference:''
+    crimeYes: '',
+    crimeNo: '',
+    timePreference: ''
   });
   const [errors, setErrors] = useState({});
 
@@ -102,23 +102,32 @@ const GeneralInformation = () => {
       newErrors.address = "Address is required"
     }
     setErrors(newErrors);
+    return newErrors;
   }
+
+  useEffect(() => {
+    setInputValues(userData);
+  }, [userData]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputValues({ ...userData, [name]: value });
-    setUserData({ ...userData, [name]: value });
-    setErrors(prevState => ({...prevState,[name]: ''}));
+    const { name, value, type, checked } = e.target;
+    const newValue = type === "checkbox" ? checked : value;
+    setInputValues({ ...inputValues, [name]: newValue });
+    setUserData({ ...userData, [name]: newValue });
+    setErrors(prevState => ({ ...prevState, [name]: '' }));
   };
 
-  const onSubmit = () =>{
-    validateInputs();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const validationErrors = validateInputs();
+    if (Object.keys(validationErrors).length === 0) {
       console.log(JSON.stringify(userData));
-    
-  }
+      handleClick("next",true);
+    }
+  };
 
   return (
-    <form method="post">
+    <form>
       <div className="flex flex-col">
       <div className="font-bold h-6 mt-3 text-gray-500 text-xs leading-8 uppercase">Username</div>
       <div className="bg-white my-2 p-1 flex border border-gray-200 rounded">
@@ -450,10 +459,12 @@ const GeneralInformation = () => {
         will be considered in relation to specific job requirements
       </div>
     </div>
-    <input type="button" 
-    value="Submit"
-    onClick={onSubmit}
-    className="bg-green-500 text-white uppercase py-2 px-4 rounded-xl font-semibold cursor-pointer border-2 border-slate-300 hover:bg-slate-700 hover:text-white transition duration-200 ease-in-out" />
+    <StepperControl
+        handleClick={handleClick}
+        handleSubmit={handleSubmit}
+        currentStep={currentStep}
+        steps={steps}
+      />
     </form>
     
   );

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import './App.css'
 import { StepperContext } from './components/contexts/StepperContext';
 import Stepper from './components/Stepper'
-import StepperControl from './components/StepperControl'
+// import StepperControl from './components/StepperControl'
 import GeneralInformation from './components/steps/GeneralInformation/GeneralInformation';
 import Education from './components/steps/Education/Education';
 import PreviousExperience from './components/steps/PreviousExperience/PreviousExperience';
@@ -24,7 +24,8 @@ function App() {
         return <GeneralInformation handleClick={handleClick} currentStep={currentStep}
         steps={steps}/>
       case 2:
-        return <Education/>
+        return <Education  handleClick={handleClick} currentStep={currentStep}
+        steps={steps}/>
       case 3:
         return <PreviousExperience/>
       case 4:
@@ -40,13 +41,17 @@ function App() {
     }
   }
 
-  const handleClick = (direction) => {
-    let newStep = currentStep;
-    direction === "next"?newStep++:newStep--;
-    //check if steps are within bounds
-    newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
-  }
 
+
+
+  const handleClick = (direction, skipValidation = false) => {
+    let newStep = currentStep;
+    direction === "next" ? newStep++ : newStep--;
+    // check if steps are within bounds
+    if (newStep > 0 && newStep <= steps.length) {
+      setCurrentStep(newStep);
+    }
+  }
   
   return (
     <div className="max-w-full max-auto shadow-xl rounded-2xl pb-2 bg-white">
@@ -58,9 +63,7 @@ function App() {
         />
       {/* Display Components */}
       <div className='my-10 p-10'>
-        <StepperContext.Provider value={{
-          userData,setUserData,finalData,setFinalData
-        }}>
+        <StepperContext.Provider value={{userData,setUserData,finalData,setFinalData}}>
           {displayStep(currentStep)}
         </StepperContext.Provider>
       </div>
@@ -68,11 +71,7 @@ function App() {
       </div>
 
       {/* Navigation Controls */}
-      <StepperControl 
-      handleClick={handleClick}
-      currentStep={currentStep}
-      steps={steps}
-      />
+      
     </div>
   )
 }
