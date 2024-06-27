@@ -1,10 +1,23 @@
-import React from 'react'
+import React from 'react';
+import StepperControl from '../../StepperControl'; 
 
-const PreviousExperience = () => {
+const PreviousExperience = ({handleClick,currentStep,steps}) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+      handleClick("next",true);
+  };
   return (
-    <div>
-      <h1>PreviousExperience</h1>
+    <div className="flex flex-col">
+      <h1>Previous experience</h1>
+      <StepperControl
+        handleClick={handleClick}
+        handleSubmit={handleSubmit}
+        currentStep={currentStep}
+        steps={steps}
+      />
     </div>
+   
+     
   )
 }
 
