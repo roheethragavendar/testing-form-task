@@ -35,75 +35,42 @@ const GeneralInformation = ({handleClick,currentStep,steps}) => {
 
   const validateInputs = () => {
     let newErrors = {};
-    if(!inputValues.fullName || !inputValues.fullName.trim()){
-      newErrors.fullName = "Full name is required"
+    
+    if (!inputValues.fullName) newErrors.fullName = "Full name is required";
+    if (!inputValues.currentPhoneNumber) {
+      newErrors.currentPhoneNumber = "Phone Number is required";
+    } else if (!/^\d{10}$/.test(inputValues.currentPhoneNumber)) {
+      newErrors.currentPhoneNumber = 'Phone Number must be 10 digits';
     }
-    if(!inputValues.currentPhoneNumber || !inputValues.currentPhoneNumber.trim()){
-        newErrors.currentPhoneNumber = "Phone Number is required"
-      }else if (!/^\d{10}$/.test(inputValues.currentPhoneNumber)) {
-      errors.currentPhoneNumber = 'Phone Number must be 10 digits';
-  }
-
-  if(!inputValues.currentFaxNumber || !inputValues.currentFaxNumber.trim()){
-      newErrors.currentFaxNumber = "Current Fax Number is required"
-    }
-
-  if (!inputValues.email || !inputValues.email.trim()) {
+    if (!inputValues.currentFaxNumber) newErrors.currentFaxNumber = "Current Fax Number is required";
+    if (!inputValues.email) {
       newErrors.email = 'Email is required';
-  } else if (!/\S+@\S+\.\S+/.test(inputValues.email)) {
+    } else if (!/\S+@\S+\.\S+/.test(inputValues.email)) {
       newErrors.email = 'Email is invalid';
-  }
-
-  if (!inputValues.positionDesired.trim()) {
-      newErrors.positionDesired = 'Position Desired is required';
-  }
-
-  if (!inputValues.presentSalary.trim()) {
-      newErrors.presentSalary = 'Present Salary is required';
-  } else if (isNaN(inputValues.presentSalary)) {
-      newErrors.presentSalary = 'Present Salary must be a number';
-  }
-
-  if (!inputValues.salaryDesired.trim()) {
-      newErrors.salaryDesired = 'Salary Desired is required';
-  } else if (isNaN(inputValues.salaryDesired)) {
-      newErrors.salaryDesired = 'Salary Desired must be a number';
-  }
-
-  if (!inputValues.startDate) {
-      newErrors.startDate = 'Start Date is required';
-  }
-
-  if (!inputValues.partTime && !inputValues.fullTime) {
-      newErrors.timePreference = 'Please select Part Time or Full Time';
-  }
-
-  if (!inputValues.everApplied.trim()) {
-      newErrors.everApplied = 'Please answer if you have ever applied before';
-  }
-
-  if (!inputValues.findWhere.trim()) {
-      newErrors.findWhere = 'Please specify how you found out about SB & Company, LLC';
-  }
-
-  if (!inputValues.legallyPermittedYes && !inputValues.legallyPermittedNo) {
-      newErrors.legallyPermitted = 'Please confirm if you are legally permitted to work';
-  }
-
-  if (!inputValues.statusYes && !inputValues.statusNo) {
-      newErrors.status = 'Please answer if you require sponsorship';
-  }
-
-  if (!inputValues.crimeYes && !inputValues.crimeNo) {
-      newErrors.crime = 'Please answer if you have been convicted of a crime';
-  }
- 
-    if(!inputValues.address || !inputValues.address.trim()){
-      newErrors.address = "Address is required"
     }
+    if (!inputValues.positionDesired) newErrors.positionDesired = 'Position Desired is required';
+    if (!inputValues.presentSalary) {
+      newErrors.presentSalary = 'Present Salary is required';
+    } else if (isNaN(inputValues.presentSalary)) {
+      newErrors.presentSalary = 'Present Salary must be a number';
+    }
+    if (!inputValues.salaryDesired) {
+      newErrors.salaryDesired = 'Salary Desired is required';
+    } else if (isNaN(inputValues.salaryDesired)) {
+      newErrors.salaryDesired = 'Salary Desired must be a number';
+    }
+    if (!inputValues.startDate) newErrors.startDate = 'Start Date is required';
+    if (!inputValues.partTime && !inputValues.fullTime) newErrors.timePreference = 'Please select Part Time or Full Time';
+    if (!inputValues.everApplied) newErrors.everApplied = 'Please answer if you have ever applied before';
+    if (!inputValues.findWhere) newErrors.findWhere = 'Please specify how you found out about SB & Company, LLC';
+    if (!inputValues.legallyPermittedYes && !inputValues.legallyPermittedNo) newErrors.legallyPermitted = 'Please confirm if you are legally permitted to work';
+    if (!inputValues.statusYes && !inputValues.statusNo) newErrors.status = 'Please answer if you require sponsorship';
+    if (!inputValues.crimeYes && !inputValues.crimeNo) newErrors.crime = 'Please answer if you have been convicted of a crime';
+    if (!inputValues.address) newErrors.address = "Address is required";
+    
     setErrors(newErrors);
     return newErrors;
-  }
+  };
 
   useEffect(() => {
     setInputValues(userData);
@@ -112,8 +79,8 @@ const GeneralInformation = ({handleClick,currentStep,steps}) => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
-    setInputValues({ ...inputValues, [name]: newValue });
-    setUserData({ ...userData, [name]: newValue });
+    setInputValues(prevState => ({ ...prevState, [name]: newValue }));
+    setUserData(prevState => ({ ...prevState, [name]: newValue }));
     setErrors(prevState => ({ ...prevState, [name]: '' }));
   };
 
@@ -122,7 +89,7 @@ const GeneralInformation = ({handleClick,currentStep,steps}) => {
     const validationErrors = validateInputs();
     if (Object.keys(validationErrors).length === 0) {
       console.log(JSON.stringify(userData));
-      handleClick("next",true);
+      handleClick("next", true);
     }
   };
 
@@ -386,7 +353,7 @@ const GeneralInformation = ({handleClick,currentStep,steps}) => {
           <div>
             <input
               type="checkbox"
-              checked={userData["status"] || ""}
+              checked={userData["status"]}
               onChange={handleChange}
               name="statusYes"
               className="mb-4"
@@ -401,7 +368,7 @@ const GeneralInformation = ({handleClick,currentStep,steps}) => {
           <div>
             <input
               type="checkbox"
-              checked={userData["status"] || ""}
+              checked={userData["status"]}
               onChange={handleChange}
               name="statusNo"
               className="mb-4"

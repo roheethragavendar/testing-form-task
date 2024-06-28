@@ -46,7 +46,7 @@ function App() {
     let newStep = currentStep;
     if (direction === "next") {
       newStep++;
-    } else if (direction === "previous") {
+    } else if (direction === "back") {
       newStep--;
     }
     // check if steps are within bounds
@@ -59,10 +59,7 @@ function App() {
     <div className="max-w-full max-auto shadow-xl rounded-2xl pb-2 bg-white">
       {/* stepper */}
       <div className='container horizontal mt-5'>
-        <Stepper 
-          steps={steps}
-          currentStep={currentStep}
-        />
+        <Stepper steps={steps} currentStep={currentStep}/>
         {/* Display Components */}
         <div className='my-10 p-10'>
           <StepperContext.Provider value={{ userData, setUserData, finalData, setFinalData }}>
@@ -70,9 +67,10 @@ function App() {
           </StepperContext.Provider>
         </div>
       </div>
-      {/* Navigation Controls */}
     </div>
   );
 }
 
 export default App;
+
+
