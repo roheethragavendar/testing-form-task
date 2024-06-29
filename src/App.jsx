@@ -9,13 +9,17 @@ import AdditionalQualification from './components/steps/AdditionalQualification/
 import References from './components/steps/References/References';
 import BackGroundData from './components/steps/BackGroundData/BackGroundData';
 import ApplicantsCertification from './components/steps/ApplicantsCertification/ApplicantsCertification';
+import PreviousExperienceContd from './components/steps/PreviousExperienceContd/PreviousExperienceContd';
+import Finall from './components/steps/Finall/Finall';
+
+
 
 function App() {
   const [currentStep, setCurrentStep] = useState(1);
   const [userData, setUserData] = useState('');
   const [finalData, setFinalData] = useState([]);
   const steps = [
-    "General Information", "Education", "Previous Experience", "Additional Qualification",
+    "General Information", "Education", "Previous Experience", "Previous Experience contd","Additional Qualification",
     "References", "Background Data", "Applicants Certification", "Final"
   ];
 
@@ -28,17 +32,18 @@ function App() {
       case 3:
         return <PreviousExperience handleClick={handleClick} currentStep={currentStep} steps={steps} />;
       case 4:
-        return <AdditionalQualification handleClick={handleClick} currentStep={currentStep} steps={steps} />;
+        return <PreviousExperienceContd handleClick={handleClick} currentStep={currentStep} steps={steps} />;
       case 5:
-        return <References handleClick={handleClick} currentStep={currentStep} steps={steps} />;
+        return <AdditionalQualification handleClick={handleClick} currentStep={currentStep} steps={steps} />;
       case 6:
-        return <BackGroundData handleClick={handleClick} currentStep={currentStep} steps={steps} />;
+        return <References handleClick={handleClick} currentStep={currentStep} steps={steps} />;
       case 7:
-        return <ApplicantsCertification handleClick={handleClick} currentStep={currentStep} steps={steps} />;
+        return <BackGroundData handleClick={handleClick} currentStep={currentStep} steps={steps} />;
       case 8:
-        return <Final />;
+        return <ApplicantsCertification handleClick={handleClick} currentStep={currentStep} steps={steps} />;
+      case 9:
+        return <Finall handleClick={handleClick} currentStep={currentStep} steps={steps}/>;
       default:
-        return null;
     }
   };
 
@@ -56,12 +61,12 @@ function App() {
   };
 
   return (
-    <div className="max-w-full max-auto shadow-xl rounded-2xl pb-2 bg-white">
+    <div className="w-11/12 mx-auto shadow-xl rounded-2xl pb-2 bg-white px-10">
       {/* stepper */}
-      <div className='container horizontal mt-5'>
+      <div className='container horizontal mt-5 px-[115px]'>
         <Stepper steps={steps} currentStep={currentStep}/>
         {/* Display Components */}
-        <div className='my-10 p-10'>
+        <div className='mt-20 pr-10 mr-10'>
           <StepperContext.Provider value={{ userData, setUserData, finalData, setFinalData }}>
             {displayStep(currentStep)}
           </StepperContext.Provider>
