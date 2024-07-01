@@ -6,6 +6,7 @@ const BackGroundData = ({handleClick,currentStep,steps}) => {
     e.preventDefault();
       handleClick("next",true);
   };
+
   return (
     <div className="flex flex-col">
       <div className="font-bold h-6 mt-3 text-gray-500 text-xs leading-8 uppercase">Background data</div>
